@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link rel="stylesheet" href="{% static 'geo.css' %}">
+{% endblock customcss %}
+
+{% block header %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-6">豊川市内通学・通勤ヒヤリハットマップ</h1>
+    <p class="lead">~事故一歩手前のヒヤリハット体験をみんなで共有しましょう！~</p>
+    <div class="float-right">
+   <p>豊川市役所人権交通防犯課交通委員会運営(架空サイト)</p>
+    <p>電話番号：0533-89-2149     ファックス：0533-89-2125</p>
+    </div>
+  </div>
+</div>    
+{% endblock header %}
+
+{% block content %}
+<div class='container'>
+  <div id="box">
+        <div id="target" style="width:100%; height:100%;">
+                <!-- googlemapScript -->
+                <script src="https://maps.googleapis.com/maps/api/js?key=APIキー&callback=initMap" type="text/javascript" async defer></script>
+                <script>
+var map;
+var marker = [];
+var infoWindow = [];
+var markerData = [ // マーカーを立てる場所名・緯度・経度
+ {
+        name: '豊川市足山田町黒塚',
+        url: "<a href='https://geomapapp.awsmikawa.com/detail/3'>詳細を見る</a>",
+        lat: 34.871148,
+        lng: 137.407497
+ }, {
+        name: '豊川市国府町白鳥2丁目',
+        url: "<a href='https://geomapapp.awsmikawa.com/detail/2'>詳細を見る</a>",
+        lat: 34.833235,
+        lng: 137.331538
+ }, {
+        name: '豊川市中央通り2丁目',
+        url: "<a href='https://geomapapp.awsmikawa.com/detail/1'>詳細を見る</a>",
+        lat: 34.821177,
+        lng: 137.392135
+ }
+];
+  
+function initMap() {
+ // 地図の作成
+    var mapLatLng = new google.maps.LatLng({lat: markerData[0]['lat'], lng: markerData[0]['lng']}); // 緯度経度のデータ作成
+   map = new google.maps.Map(document.getElementById('target'), { // #targetに地図を埋め込む
+    center: { // 地図の中心を指定
+           lat: 34.845935,  // 緯度
+           lng: 137.381361 // 経度
+       },
+      mapTypeId: google.maps.MapTypeId.ROADMAP, //表示する地図の形式を設定します。今回は道路地図を表示します。
+     zoom: 13
+   });
+  
+ // マーカー毎の処理
+ for (var i = 0; i < markerData.length; i++) {
+        markerLatLng = new google.maps.LatLng({lat: markerData[i]['lat'], lng: markerData[i]['lng']}); // 緯度経度のデータ作成
+        marker[i] = new google.maps.Marker({ // マーカーの追加
+         position: markerLatLng, // マーカーを立てる位置を指定
+            map: map // マーカーを立てる地図を指定
+       });
+  
+     infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
+         content: '<div class="map">' + markerData[i]['name']+'\n'+markerData[i]['url']+ '</div>' // 吹き出しに表示する内容
+       });
+  
+     markerEvent(i); // マーカーにクリックイベントを追加
+ }
+}
+  
+
+// マーカーにマウスオーバーとクリックイベントを追加
+function markerEvent(i) {
+    marker[i].addListener('mouseover', function() { // マーカーをクリックしたとき
+    infoWindow[i].open(map, marker[i]); // 吹き出しの表示
+  });
+  }
+
+</script>
+<!-- googlemapScript -->
+</div>   
+</div> 
+</div>
+<div class='container' style="margin-top:30px;">
+  <div id="box2">
+<p style="font-size:16px; color: orangered;">通学・通勤ヒヤリハットシェアリング【危険度の数値が高いほど上位表示】</p>
+{% for item in object_list %}
+<div class="alert alert-secondary" role="alert">
+<p>危険箇所の場所：<a href="{% url 'detail' item.pk %}">{{ forloop.counter }}位:{{item.title}}</a></p>
+<p>投稿者：{{item.author}}</p>
+<p>投稿日時：{{ item.published_date }}</p>
+<a href="#" class="btn btn-warning" role="button" aria-pressed="true">危険度{{item.dangerous}}</a>
+</div>
+{% endfor %}
+</div></div>
+{% endblock content %}

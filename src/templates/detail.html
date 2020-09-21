@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block customcss %}
+{% endblock customcss %}
+
+{% block header %}
+    <div class="alert alert-secondary" role="alert">
+    豊川市内通学・通勤危険箇所マップ（架空）
+    </div> 
+{% endblock header %}
+
+{% block content %}
+<div class='container'>
+<div class="alert alert-secondary" role="alert">
+<p>危険箇所の場所：{{object.title}}</p>
+<p>投稿者：{{object.author}}</p><p>投稿日時：{{ object.published_date }}</p>
+<p>危険箇所である理由：{{object.content}}</p>
+<p><img src="{{object.images.url}}" width=300></p>
+
+<a href="{% url 'dangerous' object.pk %}" class="btn btn-warning" role="button" aria-pressed="true" onclick="window.location.reload();">危険ボタン</a>
+<p>この場所で類似の経験をされた方は「危険ボタン」をおしてください。</p>
+</div>
+<a href="{% url 'index' %}" class="btn btn-dark" role="button" aria-pressed="true" onclick="window.location.reload();">最初のページへ戻る</a>
+</div><br>
+{% endblock content %}
