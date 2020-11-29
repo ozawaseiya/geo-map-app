@@ -1,7 +1,8 @@
 # Title: 豊川市内通学・通勤ヒヤリハットマップ
 PythonのフレームワークDjangoで作成した豊川市内限定のヒヤリハットマップサイト
 
-サイトのURL： https://geomapapp.awsmikawa.com/（Google Chromeでの閲覧推奨）
+サイトのURL： https://geomapapp.awsmikawa.com/
+（Google Chromeでの閲覧推奨）
 
 ソースコードの保存先　GitHub： https://github.com/ozawaseiya/geo-map-app
 
